@@ -1,0 +1,1171 @@
+/* ==========================================
+   KITCHEN DREAMS - DESIGN SYSTEM & STYLES
+   ========================================== */
+
+/* Global Reset & Typography */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka', 'Quicksand', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+:root {
+    /* Harmonious Hello Kitty Colors */
+    --bg-pink: #FEEAF0;
+    --accent-pink: #FF7B9D;
+    --accent-pink-light: #FFD1DC;
+    --dark-maroon: #7D475C;
+    --soft-white: #FFFFFF;
+    --border-pink: #FFC0D0;
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    
+    /* Station specific colors */
+    --color-pink: #FF7B9D;
+    --color-teal: #3BBBB2;
+    --color-teal-light: #E0F7F6;
+    --color-purple: #9576F1;
+    --color-purple-light: #F0EBFF;
+    --color-gray: #A09E9F;
+    --color-red: #FF5A79;
+}
+
+body {
+    background: #2b2b2f;
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+/* Landscape Widescreen Container */
+.game-container {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    background: #FFF;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Game Screens */
+.game-screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(1.02); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ==========================================
+   1. SCREEN 1: MAIN MENU STYLING
+   ========================================== */
+.screen-menu {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('assets/kitchen_bg.png');
+}
+
+.menu-header {
+    height: 50px;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom: 2px solid var(--border-pink);
+    z-index: 10;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark-maroon);
+    letter-spacing: 1px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.circle-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--border-pink);
+    background: var(--soft-white);
+    color: var(--dark-maroon);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.circle-btn:hover {
+    transform: scale(1.08);
+    background: var(--bg-pink);
+}
+
+/* Main Menu Body */
+.menu-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+/* Chef badge avatar on left */
+.chef-badge-circle {
+    position: absolute;
+    left: 80px;
+    top: 60px;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    border: 6px solid var(--soft-white);
+    background: radial-gradient(circle, #ffe3ec, #ffccd7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(125, 71, 92, 0.25);
+    animation: floating 4s ease-in-out infinite;
+}
+
+.chef-hat-icon {
+    font-size: 80px;
+}
+
+@keyframes floating {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* Center Title layout */
+.title-container {
+    text-align: center;
+    margin-bottom: 25px;
+    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.main-title {
+    font-size: 64px;
+    font-weight: 800;
+    color: var(--soft-white);
+    -webkit-text-stroke: 3px var(--dark-maroon);
+    text-shadow: 0 6px 0 var(--dark-maroon);
+    letter-spacing: 2px;
+}
+
+.season-badge {
+    display: inline-block;
+    background: #D5BFFF; /* Violet badge */
+    color: var(--dark-maroon);
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Menu buttons list */
+.menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.btn-pill {
+    width: 100%;
+    height: 56px;
+    border-radius: 28px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 6px 12px rgba(125, 71, 92, 0.15);
+}
+
+.btn-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(125, 71, 92, 0.25);
+}
+
+.btn-solid-maroon {
+    background: var(--dark-maroon);
+    border: none;
+    color: var(--soft-white);
+}
+
+.btn-solid-maroon .play-icon {
+    font-size: 14px;
+}
+
+.btn-outline-pink {
+    background: var(--soft-white);
+    border: 3px solid var(--border-pink);
+    color: var(--dark-maroon);
+}
+
+/* Under buttons status row */
+.menu-stats-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.stat-pill {
+    background: rgba(255, 255, 255, 0.85);
+    border: 2px solid var(--border-pink);
+    padding: 6px 16px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark-maroon);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Bottom Nav bar */
+.bottom-nav {
+    height: 55px;
+    background: var(--soft-white);
+    border-top: 3px solid var(--accent-pink);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 30px;
+    position: relative;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -8px 20px rgba(255, 123, 157, 0.08);
+}
+
+.nav-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--dark-maroon);
+    font-size: 12px;
+    font-weight: 600;
+    gap: 4px;
+    transition: transform 0.2s;
+}
+
+.nav-tab:hover {
+    transform: scale(1.1);
+}
+
+.nav-icon {
+    font-size: 22px;
+}
+
+/* Active Highlight tab option */
+.active-pink {
+    background: var(--accent-pink) !important;
+    color: var(--soft-white) !important;
+    border-radius: 30px;
+    padding: 4px 15px;
+    box-shadow: 0 6px 12px rgba(255, 123, 157, 0.3);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    height: 38px;
+}
+
+.active-pink .nav-icon {
+    font-size: 16px;
+}
+
+.active-pink .nav-label {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Central stack button menu */
+.nav-tab-center {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--dark-maroon);
+    border: 4px solid var(--soft-white);
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.1), 0 6px 12px rgba(125,71,92,0.3);
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.nav-tab-center:hover {
+    transform: translateX(-50%) scale(1.1);
+}
+
+.center-icon {
+    font-size: 24px;
+    color: var(--soft-white);
+}
+
+/* ==========================================
+   2. SCREEN 2: GAMEPLAY HUD STYLING
+   ========================================== */
+.screen-play {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('assets/kitchen_bg.png');
+}
+
+.hud-header {
+    height: 50px;
+    padding: 0 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border-bottom: 3px solid var(--border-pink);
+    z-index: 10;
+}
+
+.hud-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.heart-outline {
+    font-size: 22px;
+    color: var(--accent-pink);
+    font-weight: 800;
+}
+
+.hud-logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark-maroon);
+}
+
+.points-pill-badge {
+    background: #FFDDE6; /* Hello Kitchen Sugar points background */
+    padding: 6px 25px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--soft-white);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.points-label {
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--dark-maroon);
+    opacity: 0.8;
+    letter-spacing: 0.5px;
+}
+
+.points-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dark-maroon);
+}
+
+.cake-header-icon {
+    font-size: 26px;
+}
+
+/* Gameplay Main */
+.hud-main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: 35px 1fr 75px;
+    gap: 12px;
+    padding: 10px 25px;
+    position: relative;
+    height: calc(100vh - 105px);
+    overflow: hidden;
+}
+
+/* Top HUD Stats (timer, level) */
+.hud-top-bar {
+    grid-column: 1 / span 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hud-stat-pill {
+    background: var(--soft-white);
+    border: 2px solid var(--border-pink);
+    padding: 5px 15px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dark-maroon);
+}
+
+.hearts-row {
+    display: flex;
+    gap: 6px;
+    font-size: 24px;
+}
+
+.heart.filled {
+    color: var(--color-red);
+    animation: beat 1s infinite alternate;
+}
+
+@keyframes beat {
+    to { transform: scale(1.1); }
+}
+
+.heart.empty {
+    color: #BDC3C7;
+}
+
+.timer-pill {
+    background: var(--soft-white);
+    border: 2px solid var(--border-pink);
+    color: var(--dark-maroon);
+    padding: 5px 18px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Active Orders Column */
+.orders-column {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.order-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.order-avatar-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #FFF0F2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.order-avatar-emoji {
+    font-size: 22px;
+}
+
+.order-info {
+    flex: 1;
+}
+
+.order-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark-maroon);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.patience-track {
+    width: 100%;
+    height: 6px;
+    background: #E8ECF0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.patience-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.1s linear;
+}
+
+.order-heart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--soft-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Border Modifiers */
+.border-pink { border: 3px solid #FFA4BD; }
+.bg-pink { background: linear-gradient(to right, #FFA4BD, #FF6088) !important; }
+.order-heart-badge.border-pink { border: 2px solid #FFA4BD; color: #FF6088; }
+
+.border-green { border: 3px solid #80DED9; }
+.bg-green { background: linear-gradient(to right, #80DED9, #3BBBB2) !important; }
+.order-heart-badge.border-green { border: 2px solid #80DED9; color: #3BBBB2; }
+
+.border-purple { border: 3px solid #D8CEF8; }
+.bg-purple { background: linear-gradient(to right, #D8CEF8, #A492E8) !important; }
+.order-heart-badge.border-purple { border: 2px solid #D8CEF8; color: #A492E8; }
+
+/* 2x2 Kitchen Stations Grid */
+.stations-grid {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+}
+
+.station-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px) saturate(125%);
+    -webkit-backdrop-filter: blur(12px) saturate(125%);
+    border-radius: 20px;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(125, 71, 92, 0.05);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.station-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(125, 71, 92, 0.1);
+}
+
+.station-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+/* Background Station circles */
+.bg-lightpink { background-color: #FFF0F2; }
+.bg-lightteal { background-color: var(--color-teal-light); }
+.bg-lightpurple { background-color: var(--color-purple-light); }
+.bg-lightgray { background-color: #F2F2F2; }
+
+.station-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 1px;
+    color: var(--dark-maroon);
+}
+
+.station-subtitle {
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-bottom: 6px;
+    color: var(--dark-maroon);
+}
+
+.station-progress-bar {
+    width: 90%;
+    height: 10px;
+    border-radius: 5px;
+    background: #FFF;
+    overflow: hidden;
+    margin-bottom: 4px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.station-progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 5px;
+    transition: width 0.1s linear;
+}
+
+.station-status-text {
+    font-size: 9px;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+/* Highlights when the held dish requires this station */
+.station-highlight {
+    animation: pulse-border 1.5s infinite alternate;
+}
+
+@keyframes pulse-border {
+    from { box-shadow: 0 0 0 rgba(255, 123, 157, 0); }
+    to { box-shadow: 0 0 15px rgba(255, 123, 157, 0.4); border-color: var(--accent-pink) !important; }
+}
+
+.station-active {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Ready to harvest / burnt warning visual states */
+.ready-pulse {
+    animation: ready-pulse 0.8s infinite alternate;
+}
+
+@keyframes ready-pulse {
+    from { filter: brightness(1); }
+    to { filter: brightness(1.15); }
+}
+
+.burnt-shake {
+    animation: shake 0.4s infinite;
+}
+
+@keyframes shake {
+    0% { transform: rotate(0deg) translate(0); }
+    25% { transform: rotate(1deg) translate(-1px, 1px); }
+    50% { transform: rotate(0deg) translate(1px, -1px); }
+    75% { transform: rotate(-1deg) translate(-1px, -1px); }
+    100% { transform: rotate(0deg) translate(1px, 1px); }
+}
+
+.bg-red {
+    background: var(--color-red) !important;
+}
+
+/* Inventory Held Dish bar */
+.held-dish-overlay {
+    grid-column: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.held-dish-capsule {
+    width: 95%;
+    height: 52px;
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 3px dashed var(--border-pink);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 6px 15px rgba(125,71,92,0.1);
+    transition: all 0.2s ease-out;
+}
+
+.held-dish-capsule.empty {
+    border: 3px dashed var(--color-gray);
+    opacity: 0.65;
+}
+
+.held-icon {
+    font-size: 24px;
+    margin-right: 12px;
+}
+
+.held-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.held-details h5 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark-maroon);
+}
+
+.held-details p {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-gray);
+}
+
+/* Progress indicator dots inside inventory bar */
+.steps-progress-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-todo {
+    background: #E0E4E8;
+    border: 1px solid #BDC3C7;
+}
+
+.dot-done {
+    animation: popDot 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popDot {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+.ready-border {
+    border: 3px solid var(--accent-pink) !important;
+    cursor: pointer;
+}
+
+.active-border {
+    border: 3px solid var(--dark-maroon) !important;
+}
+
+.success-pulse {
+    animation: success-pulse 1.5s infinite alternate;
+}
+
+@keyframes success-pulse {
+    from { box-shadow: 0 6px 15px rgba(255, 123, 157, 0.15); }
+    to { box-shadow: 0 6px 20px rgba(255, 123, 157, 0.4); }
+}
+
+/* Floating Power-up Button */
+.floating-circle-btn {
+    position: absolute;
+    bottom: 95px;
+    right: 25px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--color-pink);
+    border: 3px solid var(--soft-white);
+    color: var(--soft-white);
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 12px rgba(255, 123, 157, 0.35);
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.2s;
+}
+
+.floating-circle-btn:hover {
+    transform: scale(1.1) rotate(15deg);
+}
+
+.pulse-active {
+    animation: wave 0.4s ease-out;
+}
+
+@keyframes wave {
+    0% { box-shadow: 0 0 0 0 rgba(255, 123, 157, 0.8); }
+    100% { box-shadow: 0 0 0 25px rgba(255, 123, 157, 0); }
+}
+
+/* ==========================================
+   3. SCREEN 3: GAME OVER / SWEET SUCCESS
+   ========================================== */
+.screen-over {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('assets/kitchen_bg.png');
+}
+
+.over-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.success-modal {
+    width: 100%;
+    max-width: 480px;
+    background: var(--soft-white);
+    border-radius: 35px;
+    border: 6px solid var(--bg-pink);
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(125,71,92,0.2);
+    animation: modalSlide 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+
+@keyframes modalSlide {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.success-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent-pink);
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+.success-subtitle {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark-maroon);
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+/* Stars Rating modal */
+.stars-row-modal {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.over-star {
+    font-size: 42px;
+    transition: transform 0.3s;
+}
+
+.filled-star {
+    color: #FF5A84; /* Beautiful pink stars */
+    animation: starPop 0.4s ease-out;
+}
+
+.empty-star {
+    color: #E8D3DC;
+}
+
+@keyframes starPop {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Summary info boxes side by side */
+.summary-cards-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    flex: 1;
+    border-radius: 20px;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.card-blue {
+    background: #E8F4FC;
+    border: 2px solid #D0E8FC;
+}
+
+.card-green {
+    background: #EDF7F2;
+    border: 2px solid #D8EFE5;
+}
+
+.card-icon {
+    font-size: 26px;
+    margin-bottom: 5px;
+}
+
+.card-title {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--dark-maroon);
+    opacity: 0.7;
+    letter-spacing: 0.5px;
+}
+
+.card-value {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.blue-text { color: #1E6091; }
+.green-text { color: #2D6A4F; }
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-solid-pink {
+    background: var(--accent-pink);
+    border: none;
+    color: var(--soft-white);
+}
+
+/* Bottom quote bubble */
+.quote-capsule {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--dark-maroon);
+    margin-top: 25px;
+    border: 2px solid #FFEBF0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    max-width: 80%;
+    text-align: center;
+}
+
+/* ==========================================
+   4. COOKBOOK MODAL STYLING
+   ========================================== */
+.modal-cookbook-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(125, 71, 92, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal-cookbook-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.cookbook-modal {
+    width: 90%;
+    max-width: 580px;
+    height: 80%;
+    background: var(--soft-white);
+    border-radius: 30px;
+    border: 5px solid var(--border-pink);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+    transform: translateY(20px);
+    transition: transform 0.3s;
+}
+
+.modal-cookbook-overlay.active .cookbook-modal {
+    transform: translateY(0);
+}
+
+.cookbook-header {
+    height: 60px;
+    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--bg-pink);
+}
+
+.cookbook-header h3 {
+    color: var(--dark-maroon);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.btn-close-modal {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: var(--dark-maroon);
+    cursor: pointer;
+}
+
+.cookbook-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cookbook-card {
+    background: #FFF9FA;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+.recipe-icon-circle {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #FFF;
+    border: 2px solid var(--border-pink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+}
+
+.recipe-details {
+    flex: 1;
+}
+
+.recipe-details h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark-maroon);
+    margin-bottom: 2px;
+}
+
+.recipe-desc {
+    font-size: 11px;
+    color: var(--color-gray);
+    margin-bottom: 8px;
+}
+
+.recipe-steps-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.step-badge-mini {
+    font-size: 8px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 10px;
+    color: var(--soft-white);
+}
+
+.badge-pink { background: var(--color-pink); }
+.badge-teal { background: var(--color-teal); }
+.badge-purple { background: var(--color-purple); }
+
+.btn-select-recipe {
+    background: var(--dark-maroon);
+    color: var(--soft-white);
+    border: none;
+    padding: 8px 18px;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-select-recipe:hover {
+    transform: scale(1.05);
+}
+
+/* Helpers */
+.capitalize { text-transform: capitalize; }
+.text-accent { color: var(--accent-pink); }
+.txt-red { color: var(--color-red) !important; }
+.txt-green { color: var(--color-teal) !important; }
+
+/* Custom Scrollbar for list panels */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #FEEAF0;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-pink);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-pink);
+}
+
+/* Flawless Pointer-Events Touch Fix: Disable panning/scrolling gestures on gameplay controls */
+.station-card,
+.nav-tab,
+.btn-pill,
+.btn-select-recipe,
+.order-card,
+.held-dish-capsule,
+.floating-circle-btn {
+    touch-action: none !important;
+}
+

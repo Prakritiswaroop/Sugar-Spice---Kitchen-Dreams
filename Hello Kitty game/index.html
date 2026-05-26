@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sugar & Spice: Kitchen Dreams - Infinite Procedural Time-Management Game</title>
+    <meta name="description" content="Help Hello Kitty bake mouthwatering treats in Kitchen Dreams! An infinite procedurally generated cooking time-management game. Complete shifts, earn sugar points, and master delicious recipes.">
+    
+    <!-- Global Error Logging -->
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error("Error: " + message + "\nLine: " + lineno + "\nSource: " + source);
+            return false;
+        };
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error("Promise Rejected: " + event.reason);
+        });
+    </script>
+
+    <!-- Premium Cute Fonts from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Style Sheet Sheet -->
+    <link rel="stylesheet" href="style.css?v=12">
+</head>
+<body>
+    <div class="game-container">
+        
+        <!-- ==================== SCREEN 1: MAIN MENU ==================== -->
+        <div id="screen-menu" class="game-screen screen-menu">
+            <!-- Header bar -->
+            <header class="menu-header">
+                <span class="logo-text">SUGAR & SPICE</span>
+                <div class="header-actions">
+                    <button class="circle-btn btn-reload-app" title="Force Reload App">🔄</button>
+                    <button class="circle-btn">⏸</button>
+                    <button class="circle-btn">⚙</button>
+                </div>
+            </header>
+
+            <!-- Main Menu content -->
+            <main class="menu-main">
+                <!-- Left Circular Badge with Chef Hat -->
+                <div class="chef-badge-circle">
+                    <div class="chef-hat-icon">🧑‍🍳</div>
+                </div>
+
+                <!-- Center Title & Subtitle Pill -->
+                <div class="title-container">
+                    <h1 class="main-title">KITCHEN DREAMS</h1>
+                    <div class="season-badge">SEASON 1: SWEET SURPRISE</div>
+                </div>
+
+                <!-- Menu Buttons -->
+                <div class="menu-actions">
+                    <button id="btn-start-game" class="btn-pill btn-solid-maroon">
+                        <span>START GAME</span>
+                        <span class="play-icon">▶</span>
+                    </button>
+                    <button id="btn-level-select" class="btn-pill btn-outline-pink">
+                        <span>LEVEL SELECT</span>
+                        <span class="icon-map">🗺️</span>
+                    </button>
+                    <button id="btn-settings" class="btn-pill btn-outline-pink">
+                        <span>SETTINGS</span>
+                        <span class="icon-gear">⚙️</span>
+                    </button>
+                </div>
+
+                <!-- Under Button Stats -->
+                <div class="menu-stats-row">
+                    <div class="stat-pill"><span class="icon">🏆</span> Rank: #42</div>
+                    <div class="stat-pill"><span class="icon">❤️</span> 5/5 Hearts</div>
+                </div>
+            </main>
+
+            <!-- Bottom Navigation Bar (Screen 1 variant) -->
+            <footer class="bottom-nav">
+                <button class="nav-tab"><span class="nav-icon">🍴</span><span class="nav-label">Prep</span></button>
+                <button class="nav-tab"><span class="nav-icon">♨️</span><span class="nav-label">Stove</span></button>
+                <button id="btn-cookbook" class="nav-tab-center"><span class="center-icon">☰</span></button>
+                <button class="nav-tab"><span class="nav-icon">🛎️</span><span class="nav-label">Serve</span></button>
+                <button class="nav-tab"><span class="nav-icon">🛍️</span><span class="nav-label">Shop</span></button>
+            </footer>
+        </div>
+
+        <!-- ==================== SCREEN 2: GAMEPLAY HUD ==================== -->
+        <div id="screen-play" class="game-screen screen-play" style="display: none;">
+            <!-- Header bar -->
+            <header class="hud-header">
+                <div class="hud-title-wrap">
+                    <span class="heart-outline">♡</span>
+                    <span class="hud-logo-text">Hello Kitchen</span>
+                </div>
+                
+                <!-- Central sugar points badge -->
+                <div class="points-pill-badge">
+                    <span class="points-label">SUGAR POINTS</span>
+                    <span id="points-val" class="points-value">0</span>
+                </div>
+                
+                <!-- Right-aligned cake icon and reload -->
+                <div style="display:flex; align-items:center; gap: 10px;">
+                    <button class="circle-btn btn-reload-app" style="width:36px; height:36px; font-size:14px;" title="Force Reload App">🔄</button>
+                    <div class="cake-header-icon">🍰</div>
+                </div>
+            </header>
+
+            <!-- Main gameplay grid -->
+            <main class="hud-main">
+                
+                <!-- Top HUD stats (Level & Lives, Timer) -->
+                <div class="hud-top-bar">
+                    <div id="level-val" class="hud-stat-pill">LEVEL 1</div>
+                    <div id="hearts-list" class="hearts-row"></div>
+                    <div id="timer-val" class="timer-pill">1:30</div>
+                </div>
+
+                <!-- Left Column: Active Customer Orders List -->
+                <div id="orders-list" class="orders-column">
+                    <!-- Dynamic orders injected here by script -->
+                </div>
+
+                <!-- Center Cooking Stations (2x2 Grid) -->
+                <div class="stations-grid">
+                    
+                    <!-- Whisking Station -->
+                    <div id="station-whisk" class="station-card text-pink border-pink">
+                        <div class="station-icon-wrap bg-lightpink">🍴</div>
+                        <h3>Whisking</h3>
+                        <p class="station-subtitle">Tap to Mix!</p>
+                        <div class="station-progress-bar border-pink">
+                            <div class="station-progress-fill bg-pink" style="width: 0%;"></div>
+                        </div>
+                        <span class="station-status-text">Inactive</span>
+                    </div>
+
+                    <!-- Baking Station -->
+                    <div id="station-bake" class="station-card text-teal border-teal">
+                        <div class="station-icon-wrap bg-lightteal">📟</div>
+                        <h3>Baking</h3>
+                        <p class="station-subtitle">Smells Sweet!</p>
+                        <div class="station-progress-bar border-teal">
+                            <div class="station-progress-fill bg-teal" style="width: 0%;"></div>
+                        </div>
+                        <span class="station-status-text">Inactive</span>
+                    </div>
+
+                    <!-- Icing Station -->
+                    <div id="station-icing" class="station-card text-purple border-purple">
+                        <div class="station-icon-wrap bg-lightpurple">🧁</div>
+                        <h3>Icing</h3>
+                        <p class="station-subtitle">Be Creative!</p>
+                        <div class="station-progress-bar border-purple">
+                            <div class="station-progress-fill bg-purple" style="width: 0%;"></div>
+                        </div>
+                        <span class="station-status-text">Inactive</span>
+                    </div>
+
+                    <!-- Trash Station -->
+                    <div id="station-trash" class="station-card text-gray border-gray">
+                        <div class="station-icon-wrap bg-lightgray">🗑️</div>
+                        <h3>Trash</h3>
+                        <p class="station-subtitle">Oopsie!</p>
+                        <div class="trash-body">
+                            <span class="trash-hint">Click to discard currently held dish</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom Inventory Overlay (Shows currently held dish and ingredients) -->
+                <div class="held-dish-overlay">
+                    <div id="held-dish-card" class="held-dish-capsule empty">
+                        <!-- Dynamic content loaded from script -->
+                    </div>
+                </div>
+
+                <!-- Floating Lightning Bolt Power-Up -->
+                <button id="hud-lightning" class="floating-circle-btn">⚡</button>
+            </main>
+
+            <!-- Bottom Navigation Bar (Screen 2 variant) -->
+            <footer class="bottom-nav">
+                <button id="nav-btn-prep" class="nav-tab active-pink"><span class="nav-icon">🍴</span><span class="nav-label">Prep</span></button>
+                <button id="nav-btn-bake" class="nav-tab"><span class="nav-icon">🍞</span><span class="nav-label">Bake</span></button>
+                <button id="nav-btn-decor" class="nav-tab"><span class="nav-icon">🧁</span><span class="nav-label">Decorate</span></button>
+                <button id="nav-btn-serve" class="nav-tab"><span class="nav-icon">✨</span><span class="nav-label">Serve</span></button>
+            </footer>
+        </div>
+
+        <!-- ==================== SCREEN 3: GAME OVER / SUCCESS ==================== -->
+        <div id="screen-over" class="game-screen screen-over" style="display: none;">
+            <!-- Header bar -->
+            <header class="menu-header">
+                <span class="logo-text">HK Kitchen</span>
+                <div class="header-actions">
+                    <button class="circle-btn btn-reload-app" title="Force Reload App">🔄</button>
+                    <button class="circle-btn">⏸</button>
+                    <button class="circle-btn">⚙</button>
+                </div>
+            </header>
+
+            <!-- Game Over / Sweet Success Main Content -->
+            <main class="over-main">
+                <div class="success-modal">
+                    <h2 id="over-title" class="success-title">Sweet Success!</h2>
+                    <div id="over-subtitle" class="success-subtitle">• SHIFT FINISHED! •</div>
+
+                    <!-- Stars row (earned and unearned) -->
+                    <div id="over-stars" class="stars-row-modal">
+                        <!-- Dynamic stars injected here -->
+                    </div>
+
+                    <!-- Detail Info Cards -->
+                    <div class="summary-cards-row">
+                        <!-- Blue Cakes Baked Card -->
+                        <div class="summary-card card-blue">
+                            <span class="card-icon blue-text">🧁</span>
+                            <span class="card-title">CAKES BAKED</span>
+                            <span id="over-cakes-val" class="card-value blue-text">0</span>
+                        </div>
+
+                        <!-- Green Sugar Points Card -->
+                        <div class="summary-card card-green">
+                            <span class="card-icon green-text">❤️</span>
+                            <span class="card-title">SWEET POINTS</span>
+                            <span id="over-points-val" class="card-value green-text">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="modal-actions">
+                        <button id="btn-bake-again" class="btn-pill btn-solid-pink">
+                            <span>🧁 BAKE AGAIN</span>
+                        </button>
+                        <button id="btn-main-menu" class="btn-pill btn-outline-pink">
+                            <span>🏠 MAIN MENU</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer Quote Bubble -->
+                <div id="over-quote-bubble" class="quote-capsule">
+                    "That was delicious! The kitchen is smelling so sweet!"
+                </div>
+            </main>
+
+            <!-- Bottom Navigation Bar (Screen 3 variant) -->
+            <footer class="bottom-nav">
+                <button class="nav-tab"><span class="nav-icon">💧</span><span class="nav-label">Prep</span></button>
+                <button class="nav-tab"><span class="nav-icon">🏬</span><span class="nav-label">Bake</span></button>
+                <button class="nav-tab"><span class="nav-icon">⛸️</span><span class="nav-label">Ice</span></button>
+                <button class="nav-tab active-pink"><span class="nav-icon">🧁</span><span class="nav-label">Serve</span></button>
+            </footer>
+        </div>
+
+        <!-- ==================== COOKBOOK DYNAMIC MODAL ==================== -->
+        <div id="modal-cookbook" class="modal-cookbook-overlay">
+            <div class="cookbook-modal">
+                <div class="cookbook-header">
+                    <h3>Hello Cookbook 📖</h3>
+                    <button id="close-cookbook" class="btn-close-modal">✖</button>
+                </div>
+                <div id="cookbook-list" class="cookbook-grid">
+                    <!-- Injected by script -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- ZERO-DEPENDENCY STANDALONE UNIFIED GAME ENGINE SCRIPT   -->
+    <!-- (Perfect local-file execution, bypassed CORS/caching)  -->
+    <!-- ======================================================= -->
+    <script>
+        // --- 1. AUDIO SYNTHESIZER ---
+        class AudioSynthesizer {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+            init() {
+                if (this.ctx) return;
+                try {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.warn("AudioContext not supported", e);
+                    this.enabled = false;
+                    this.ctx = null;
+                }
+            }
+            playClick() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.05);
+                } catch(e){}
+            }
+            playWhisk() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(300, this.ctx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.08);
+                } catch(e){}
+            }
+            playDing() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    const t = this.ctx.currentTime;
+                    const osc1 = this.ctx.createOscillator();
+                    const osc2 = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(987.77, t);
+                    osc2.type = 'sine';
+                    osc2.frequency.setValueAtTime(1975.53, t);
+                    gain.gain.setValueAtTime(0.12, t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+                    osc1.connect(gain);
+                    osc2.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc1.start();
+                    osc2.start();
+                    osc1.stop(t + 0.6);
+                    osc2.stop(t + 0.6);
+                } catch(e){}
+            }
+            playSuccess() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    const t = this.ctx.currentTime;
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, t + idx * 0.08);
+                        gain.gain.setValueAtTime(0.08, t + idx * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.08 + 0.25);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(t + idx * 0.08);
+                        osc.stop(t + idx * 0.08 + 0.25);
+                    });
+                } catch(e){}
+            }
+            playFailure() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, t);
+                    osc.frequency.linearRampToValueAtTime(110, t + 0.4);
+                    gain.gain.setValueAtTime(0.1, t);
+                    gain.gain.linearRampToValueAtTime(0.001, t + 0.4);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(t + 0.4);
+                } catch(e){}
+            }
+            playBurnAlert() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, t);
+                    osc.frequency.linearRampToValueAtTime(300, t + 0.15);
+                    gain.gain.setValueAtTime(0.08, t);
+                    gain.gain.linearRampToValueAtTime(0.001, t + 0.15);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(t + 0.15);
+                } catch(e){}
+            }
+            playLevelUp() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    const t = this.ctx.currentTime;
+                    const notes = [587.33, 659.25, 698.46, 783.99, 880.00, 987.77, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, t + idx * 0.05);
+                        gain.gain.setValueAtTime(0.05, t + idx * 0.05);
+                        gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.05 + 0.2);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(t + idx * 0.05);
+                        osc.stop(t + idx * 0.05 + 0.2);
+                    });
+                } catch(e){}
+            }
+        }
+        const sfx = new AudioSynthesizer();
+
+        // --- 2. RECIPES DATABASE ---
+        const RECIPES = [
+            { id: "berry_cake", name: "Berry Cake", icon: "🍰", steps: ["whisk", "bake", "decorate"], description: "Garnished with fresh berries!", color: "pink" },
+            { id: "choco_chip", name: "Choco Chip", icon: "🍪", steps: ["whisk", "bake"], description: "Full of chocolate chips!", color: "green" },
+            { id: "space_donut", name: "Space Donut", icon: "🍩", steps: ["whisk", "decorate"], description: "Glazed cosmic donut!", color: "purple" },
+            { id: "sweet_cupcake", name: "Sweet Cupcake", icon: "🧁", steps: ["bake", "decorate"], description: "Fluffy vanilla frosting!", color: "pink" },
+            { id: "sugar_cookie", name: "Sugar Cookie", icon: "🥞", steps: ["whisk"], description: "Simple sweet cookie!", color: "green" },
+            { id: "rainbow_roll", name: "Rainbow Roll", icon: "🍥", steps: ["whisk", "bake", "decorate"], description: "Colorful sponge roll!", color: "purple" },
+            { id: "apple_tart", name: "Apple Tart", icon: "🥧", steps: ["bake", "decorate"], description: "Caramelized apples!", color: "pink" },
+            { id: "choco_brownie", name: "Choco Brownie", icon: "🍫", steps: ["whisk", "bake"], description: "Fudgy and double choco!", color: "green" },
+            { id: "honey_macaron", name: "Honey Macaron", icon: "🍬", steps: ["whisk", "decorate"], description: "Sandwiched sweet honey!", color: "purple" },
+            { id: "strawberry_crepe", name: "Strawberry Crepe", icon: "🍓", steps: ["whisk", "decorate"], description: "Topped with strawberries!", color: "pink" },
+            { id: "vanilla_scone", name: "Vanilla Scone", icon: "🍞", steps: ["bake"], description: "Baked to golden brown!", color: "green" }
+        ];
+
+        // --- 3. DIFFICULTY MANAGER ---
+        class DifficultyManager {
+            constructor() { this.reset(); }
+            reset() { this.level = 1; this.score = 0; }
+            update(score) {
+                this.score = score;
+                const newLevel = Math.max(1, 1 + Math.floor(score / 1000));
+                const leveledUp = newLevel > this.level;
+                this.level = newLevel;
+                return leveledUp;
+            }
+            getOrderSpawnInterval() {
+                return 2.8 + (8.5 - 2.8) * Math.exp(-0.15 * (this.level - 1));
+            }
+            getCustomerPatience() {
+                return 10.0 + (28.0 - 10.0) * Math.exp(-0.08 * (this.level - 1));
+            }
+            getBurnThreshold() {
+                return 4.0 + (12.0 - 4.0) * Math.exp(-0.10 * (this.level - 1));
+            }
+            getMaxSimultaneousOrders() {
+                return Math.min(3, 1 + Math.floor((this.level - 1) / 2));
+            }
+            getAvailableRecipes(allRecipes) {
+                return allRecipes || [];
+            }
+        }
+
+        // --- 4. ORDER GENERATOR ---
+        class OrderGenerator {
+            constructor(difficulty) {
+                this.difficulty = difficulty;
+                this.activeOrders = [];
+                this.orderIdCounter = 0;
+            }
+            reset() { this.activeOrders = []; this.orderIdCounter = 0; }
+            spawnOrder() {
+                const maxSim = this.difficulty.getMaxSimultaneousOrders();
+                if (this.activeOrders.length >= maxSim) return null;
+                const pool = this.difficulty.getAvailableRecipes(RECIPES);
+                if (pool.length === 0) return null;
+                const recipe = pool[Math.floor(Math.random() * pool.length)];
+                const maxPat = this.difficulty.getCustomerPatience();
+                const order = {
+                    id: ++this.orderIdCounter,
+                    recipe: recipe,
+                    patienceMax: maxPat,
+                    patienceLeft: maxPat,
+                    createdAt: Date.now()
+                };
+                this.activeOrders.push(order);
+                return order;
+            }
+            tick(dt) {
+                const expired = [];
+                this.activeOrders = this.activeOrders.filter(o => {
+                    o.patienceLeft -= dt;
+                    if (o.patienceLeft <= 0) {
+                        expired.push(o);
+                        return false;
+                    }
+                    return true;
+                });
+                return expired;
+            }
+            serveRecipe(dish) {
+                const idx = this.activeOrders.findIndex(o => o.recipe.id === dish.recipe.id && dish.isComplete);
+                if (idx === -1) return null;
+                const matched = this.activeOrders[idx];
+                const ratio = matched.patienceLeft / matched.patienceMax;
+                const bonus = Math.round(ratio * 100);
+                this.activeOrders.splice(idx, 1);
+                return { score: 100 + bonus, speedBonus: bonus, recipeName: matched.recipe.name };
+            }
+        }
+
+        // --- 5. KITCHEN INTERACTION MODELS ---
+        class DishState {
+            constructor(recipe = null) {
+                this.recipe = recipe;
+                this.completedSteps = [];
+                this.isBurnt = false;
+            }
+            reset() { this.recipe = null; this.completedSteps = []; this.isBurnt = false; }
+            startRecipe(recipe) {
+                this.recipe = recipe;
+                this.completedSteps = [];
+                this.isBurnt = false;
+                sfx.playClick();
+            }
+            get isComplete() {
+                if (!this.recipe || this.isBurnt) return false;
+                if (this.completedSteps.length !== this.recipe.steps.length) return false;
+                for (let i = 0; i < this.recipe.steps.length; i++) {
+                    if (this.completedSteps[i] !== this.recipe.steps[i]) return false;
+                }
+                return true;
+            }
+            getNextRequiredStep() {
+                if (!this.recipe || this.isBurnt) return null;
+                const idx = this.completedSteps.length;
+                if (idx < this.recipe.steps.length) return this.recipe.steps[idx];
+                return null;
+            }
+            completeStep(step) {
+                if (!this.recipe || this.isBurnt) return false;
+                if (this.getNextRequiredStep() === step) {
+                    this.completedSteps.push(step);
+                    return true;
+                }
+                return false;
+            }
+            burn() { this.isBurnt = true; sfx.playFailure(); }
+        }
+
+        class KitchenManager {
+            constructor(difficulty) {
+                this.difficulty = difficulty;
+                this.whisking = { active: false, progress: 0, tapIncrement: 12 };
+                this.baking = { active: false, progress: 0, bakingSpeed: 20, burnProgress: 0, isDone: false, isBurnt: false };
+                this.icing = { active: false, progress: 0, decoratingSpeed: 25 };
+            }
+            reset() {
+                this.whisking.active = false; this.whisking.progress = 0;
+                this.baking.active = false; this.baking.progress = 0; this.baking.burnProgress = 0; this.baking.isDone = false; this.baking.isBurnt = false;
+                this.icing.active = false; this.icing.progress = 0;
+            }
+            tick(dt, dish) {
+                let changed = false;
+                if (this.baking.active) {
+                    if (!this.baking.isDone) {
+                        this.baking.progress += this.baking.bakingSpeed * dt;
+                        if (this.baking.progress >= 100) {
+                            this.baking.progress = 100;
+                            this.baking.isDone = true;
+                            sfx.playDing();
+                            changed = true;
+                        }
+                    } else if (!this.baking.isBurnt) {
+                        const threshold = this.difficulty.getBurnThreshold();
+                        this.baking.burnProgress += (100 / threshold) * dt;
+                        if (this.baking.burnProgress > 75 && Math.random() < 0.05) sfx.playBurnAlert();
+                        if (this.baking.burnProgress >= 100) {
+                            this.baking.burnProgress = 100;
+                            this.baking.isBurnt = true;
+                            if (dish && dish.recipe && dish.getNextRequiredStep() === "bake") dish.burn();
+                            changed = true;
+                        }
+                    }
+                }
+                if (this.icing.active) {
+                    this.icing.progress += this.icing.decoratingSpeed * dt;
+                    if (this.icing.progress >= 100) {
+                        this.icing.progress = 100;
+                        this.icing.active = false;
+                        if (dish && dish.completeStep("decorate")) sfx.playSuccess();
+                        changed = true;
+                    }
+                }
+                return changed;
+            }
+            tapWhisk(dish) {
+                if (!dish.recipe || dish.isBurnt) return false;
+                if (dish.getNextRequiredStep() !== "whisk") return false;
+                if (!this.whisking.active) { this.whisking.active = true; this.whisking.progress = 0; }
+                this.whisking.progress += this.whisking.tapIncrement;
+                sfx.playWhisk();
+                if (this.whisking.progress >= 100) {
+                    this.whisking.progress = 100;
+                    this.whisking.active = false;
+                    dish.completeStep("whisk");
+                    sfx.playSuccess();
+                    return true;
+                }
+                return false;
+            }
+            startBaking(dish) {
+                if (!dish.recipe || dish.isBurnt) return false;
+                if (dish.getNextRequiredStep() !== "bake") return false;
+                if (this.baking.active) return false;
+                this.baking.active = true;
+                this.baking.progress = 0; this.baking.burnProgress = 0; this.baking.isDone = false; this.baking.isBurnt = false;
+                sfx.playClick();
+                return true;
+            }
+            retrieveBake(dish) {
+                if (!this.baking.active || !this.baking.isDone) return false;
+                if (this.baking.isBurnt) {
+                    dish.burn();
+                } else {
+                    dish.completeStep("bake");
+                    sfx.playSuccess();
+                }
+                this.baking.active = false; this.baking.progress = 0; this.baking.burnProgress = 0; this.baking.isDone = false; this.baking.isBurnt = false;
+                return true;
+            }
+            startIcing(dish) {
+                if (!dish.recipe || dish.isBurnt) return false;
+                if (dish.getNextRequiredStep() !== "decorate") return false;
+                if (this.icing.active) return false;
+                this.icing.active = true;
+                this.icing.progress = 0;
+                sfx.playClick();
+                return true;
+            }
+        }
+
+        // --- 6. GAME MANAGER ---
+        class GameManager {
+            constructor() {
+                this.difficulty = new DifficultyManager();
+                this.orders = new OrderGenerator(this.difficulty);
+                this.heldDish = new DishState();
+                this.kitchen = new KitchenManager(this.difficulty);
+                this.gameState = 'MENU';
+                this.score = 0;
+                this.hearts = 5;
+                this.maxHearts = 5;
+                this.cakesBaked = 0;
+                this.shiftDuration = 90;
+                this.shiftTimeLeft = 90;
+                this.lastTime = 0;
+                this.spawnTimer = 0;
+                this.onStateChange = null;
+                this.onTick = null;
+            }
+            startNewGame() {
+                this.difficulty.reset();
+                this.orders.reset();
+                this.heldDish.reset();
+                this.kitchen.reset();
+                this.score = 0;
+                this.hearts = this.maxHearts;
+                this.cakesBaked = 0;
+                this.shiftTimeLeft = this.shiftDuration;
+                this.gameState = 'PLAYING';
+                this.lastTime = performance.now();
+                
+                // Spawn first order instantly
+                const spawned = this.orders.spawnOrder();
+                if (spawned) {
+                    this.heldDish.startRecipe(spawned.recipe);
+                }
+                this.spawnTimer = this.difficulty.getOrderSpawnInterval();
+                sfx.playClick();
+                if (this.onStateChange) this.onStateChange(this.gameState);
+                requestAnimationFrame((t) => this.gameLoop(t));
+            }
+            gameLoop(t) {
+                if (this.gameState !== 'PLAYING') return;
+                const dt = Math.min((t - this.lastTime) / 1000, 0.1);
+                this.lastTime = t;
+                this.shiftTimeLeft -= dt;
+                if (this.shiftTimeLeft <= 0) {
+                    this.shiftTimeLeft = 0;
+                    this.finishShift(true);
+                    return;
+                }
+                const expired = this.orders.tick(dt);
+                if (expired.length > 0) {
+                    expired.forEach(() => {
+                        this.hearts--;
+                        sfx.playFailure();
+                    });
+                    if (this.hearts <= 0) {
+                        this.hearts = 0;
+                        this.finishShift(false);
+                        return;
+                    }
+                }
+                this.spawnTimer -= dt;
+                if (this.spawnTimer <= 0) {
+                    const spawned = this.orders.spawnOrder();
+                    this.spawnTimer = this.difficulty.getOrderSpawnInterval();
+                }
+                if (!this.heldDish.recipe && this.orders.activeOrders.length > 0) {
+                    this.heldDish.startRecipe(this.orders.activeOrders[0].recipe);
+                }
+                this.kitchen.tick(dt, this.heldDish);
+                if (this.onTick) this.onTick();
+                requestAnimationFrame((t2) => this.gameLoop(t2));
+            }
+            finishShift(win) {
+                this.gameState = 'GAMEOVER';
+                if (win) sfx.playLevelUp(); else sfx.playFailure();
+                if (this.onStateChange) this.onStateChange(this.gameState, win);
+            }
+            selectRecipe(recipe) {
+                if (this.gameState !== 'PLAYING') return;
+                this.heldDish.startRecipe(recipe);
+                if (this.onTick) this.onTick();
+            }
+            tapWhisk() {
+                if (this.gameState !== 'PLAYING') return;
+                this.kitchen.tapWhisk(this.heldDish);
+                if (this.onTick) this.onTick();
+            }
+            interactBake() {
+                if (this.gameState !== 'PLAYING') return;
+                if (this.kitchen.baking.active) {
+                    if (this.kitchen.baking.isDone) this.kitchen.retrieveBake(this.heldDish);
+                } else {
+                    this.kitchen.startBaking(this.heldDish);
+                }
+                if (this.onTick) this.onTick();
+            }
+            interactIcing() {
+                if (this.gameState !== 'PLAYING') return;
+                if (!this.kitchen.icing.active) this.kitchen.startIcing(this.heldDish);
+                if (this.onTick) this.onTick();
+            }
+            trashDish() {
+                if (this.gameState !== 'PLAYING') return;
+                if (this.heldDish.recipe) {
+                    this.heldDish.reset();
+                    sfx.playFailure();
+                    if (this.orders.activeOrders.length > 0) {
+                        this.heldDish.startRecipe(this.orders.activeOrders[0].recipe);
+                    }
+                    if (this.onTick) this.onTick();
+                }
+            }
+            serveDish() {
+                if (this.gameState !== 'PLAYING') return;
+                if (!this.heldDish.isComplete) return;
+                const res = this.orders.serveRecipe(this.heldDish);
+                if (res) {
+                    this.score += res.score;
+                    this.cakesBaked++;
+                    sfx.playSuccess();
+                    const lvlUp = this.difficulty.update(this.score);
+                    if (lvlUp) sfx.playLevelUp();
+                    this.heldDish.reset();
+                    if (this.orders.activeOrders.length > 0) {
+                        this.heldDish.startRecipe(this.orders.activeOrders[0].recipe);
+                    }
+                } else {
+                    sfx.playFailure();
+                }
+                if (this.onTick) this.onTick();
+            }
+            returnToMenu() {
+                this.gameState = 'MENU';
+                sfx.playClick();
+                if (this.onStateChange) this.onStateChange(this.gameState);
+            }
+        }
+
+        // --- 7. UI CONTROLLER (VIEW BINDINGS) ---
+        class UIController {
+            constructor(game) {
+                this.game = game;
+
+                // Cache DOM elements
+                this.screenMenu = document.getElementById('screen-menu');
+                this.screenPlay = document.getElementById('screen-play');
+                this.screenOver = document.getElementById('screen-over');
+
+                this.btnStartGame = document.getElementById('btn-start-game');
+                this.btnLevelSelect = document.getElementById('btn-level-select');
+                this.btnSettings = document.getElementById('btn-settings');
+                
+                this.pointsDisplay = document.getElementById('points-val');
+                this.ordersContainer = document.getElementById('orders-list');
+                this.whiskStation = document.getElementById('station-whisk');
+                this.bakeStation = document.getElementById('station-bake');
+                this.icingStation = document.getElementById('station-icing');
+                this.trashStation = document.getElementById('station-trash');
+                this.heldDishDisplay = document.getElementById('held-dish-card');
+                this.heartsContainer = document.getElementById('hearts-list');
+                this.timerDisplay = document.getElementById('timer-val');
+                this.levelDisplay = document.getElementById('level-val');
+                this.btnCookbook = document.getElementById('btn-cookbook');
+                this.modalCookbook = document.getElementById('modal-cookbook');
+                this.cookbookList = document.getElementById('cookbook-list');
+                this.btnCloseCookbook = document.getElementById('close-cookbook');
+                this.hudLightning = document.getElementById('hud-lightning');
+                this.navBtnPrep = document.getElementById('nav-btn-prep');
+                this.navBtnBake = document.getElementById('nav-btn-bake');
+                this.navBtnDecor = document.getElementById('nav-btn-decor');
+                this.navBtnServe = document.getElementById('nav-btn-serve');
+
+                this.overTitle = document.getElementById('over-title');
+                this.overSubtitle = document.getElementById('over-subtitle');
+                this.overStars = document.getElementById('over-stars');
+                this.overCakesBaked = document.getElementById('over-cakes-val');
+                this.overPointsVal = document.getElementById('over-points-val');
+                this.btnBakeAgain = document.getElementById('btn-bake-again');
+                this.btnMainMenu = document.getElementById('btn-main-menu');
+                this.overQuote = document.getElementById('over-quote-bubble');
+
+                this.initEvents();
+            }
+            initEvents() {
+                this.btnStartGame.addEventListener('click', () => this.game.startNewGame());
+                this.btnLevelSelect.addEventListener('click', () => { sfx.playClick(); console.log("Infinite Level Selection Active"); });
+                this.btnSettings.addEventListener('click', () => { sfx.playClick(); console.log("Audio Synthesizer Active"); });
+
+                // Station Taps - automatically open Cookbook modal if hands empty!
+                this.whiskStation.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    if (!this.game.heldDish.recipe) this.toggleCookbook(true); else this.game.tapWhisk();
+                });
+                this.bakeStation.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    if (!this.game.heldDish.recipe) this.toggleCookbook(true); else this.game.interactBake();
+                });
+                this.icingStation.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    if (!this.game.heldDish.recipe) this.toggleCookbook(true); else this.game.interactIcing();
+                });
+                this.trashStation.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    this.game.trashDish();
+                });
+
+                // Bottom Nav buttons mapped to actions directly
+                if (this.navBtnPrep) {
+                    this.navBtnPrep.addEventListener('pointerdown', (e) => {
+                        e.preventDefault();
+                        if (!this.game.heldDish.recipe) this.toggleCookbook(true); else this.game.tapWhisk();
+                    });
+                }
+                if (this.navBtnBake) {
+                    this.navBtnBake.addEventListener('pointerdown', (e) => {
+                        e.preventDefault();
+                        if (!this.game.heldDish.recipe) this.toggleCookbook(true); else this.game.interactBake();
+                    });
+                }
+                if (this.navBtnDecor) {
+                    this.navBtnDecor.addEventListener('pointerdown', (e) => {
+                        e.preventDefault();
+                        if (!this.game.heldDish.recipe) this.toggleCookbook(true); else this.game.interactIcing();
+                    });
+                }
+                if (this.navBtnServe) {
+                    this.navBtnServe.addEventListener('pointerdown', (e) => {
+                        e.preventDefault();
+                        if (this.game.heldDish.isComplete) this.game.serveDish(); else { sfx.playFailure(); console.warn("Treat is not complete yet!"); }
+                    });
+                }
+
+                // Force app reloader to clear edge standalone wrapper cache
+                document.querySelectorAll('.btn-reload-app').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        sfx.playClick();
+                        window.location.href = window.location.origin + window.location.pathname + '?r=' + Math.random();
+                    });
+                });
+
+                this.heldDishDisplay.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    if (this.game.heldDish.isComplete) this.game.serveDish();
+                });
+
+                this.btnCookbook.addEventListener('pointerdown', (e) => { e.preventDefault(); this.toggleCookbook(true); });
+                this.btnCloseCookbook.addEventListener('pointerdown', (e) => { e.preventDefault(); this.toggleCookbook(false); });
+                this.hudLightning.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    sfx.playLevelUp();
+                    this.hudLightning.classList.add('pulse-active');
+                    setTimeout(() => this.hudLightning.classList.remove('pulse-active'), 500);
+                    if (this.game.heldDish.recipe) {
+                        const step = this.game.heldDish.getNextRequiredStep();
+                        if (step === "whisk") {
+                            this.game.kitchen.whisking.progress = 100;
+                            this.game.heldDish.completeStep("whisk");
+                            sfx.playSuccess();
+                        } else if (step === "bake" && this.game.kitchen.baking.active && !this.game.kitchen.baking.isDone) {
+                            this.game.kitchen.baking.progress = 100;
+                            this.game.kitchen.baking.isDone = true;
+                            sfx.playDing();
+                        } else if (step === "decorate" && this.game.kitchen.icing.active && this.game.kitchen.icing.progress < 100) {
+                            this.game.kitchen.icing.progress = 100;
+                        }
+                        this.updateHUD();
+                    }
+                });
+
+                this.btnBakeAgain.addEventListener('click', () => this.game.startNewGame());
+                this.btnMainMenu.addEventListener('click', () => this.game.returnToMenu());
+
+                this.game.onStateChange = (s, win) => this.handleStateChange(s, win);
+                this.game.onTick = () => this.updateHUD();
+
+                this.renderCookbook();
+            }
+            handleStateChange(s, win) {
+                this.screenMenu.style.display = 'none';
+                this.screenPlay.style.display = 'none';
+                this.screenOver.style.display = 'none';
+                if (s === 'MENU') {
+                    this.screenMenu.style.display = 'flex';
+                } else if (s === 'PLAYING') {
+                    this.screenPlay.style.display = 'flex';
+                    this.toggleCookbook(false);
+                    this.updateHUD();
+                } else if (s === 'GAMEOVER') {
+                    this.screenOver.style.display = 'flex';
+                    this.renderGameOverScreen(win);
+                }
+            }
+            toggleCookbook(show) {
+                sfx.playClick();
+                if (show) this.modalCookbook.classList.add('active'); else this.modalCookbook.classList.remove('active');
+            }
+            renderCookbook() {
+                this.cookbookList.innerHTML = '';
+                RECIPES.forEach(r => {
+                    const card = document.createElement('div');
+                    card.className = `cookbook-card border-${r.color}`;
+                    const stepsHtml = r.steps.map(s => {
+                        let color = 'pink';
+                        if (s === 'bake') color = 'teal';
+                        if (s === 'decorate') color = 'purple';
+                        return `<span class="step-badge-mini badge-${color}">${s.toUpperCase()}</span>`;
+                    }).join(' ➔ ');
+
+                    card.innerHTML = `
+                        <div class="recipe-icon-circle">${r.icon}</div>
+                        <div class="recipe-details">
+                            <h4>${r.name}</h4>
+                            <p class="recipe-desc">${r.description}</p>
+                            <div class="recipe-steps-row">${stepsHtml}</div>
+                        </div>
+                        <button class="btn-select-recipe">PREP</button>
+                    `;
+                    card.querySelector('.btn-select-recipe').addEventListener('pointerdown', (e) => {
+                        e.preventDefault();
+                        this.game.selectRecipe(r);
+                        this.toggleCookbook(false);
+                    });
+                    this.cookbookList.appendChild(card);
+                });
+            }
+            updateHUD() {
+                this.pointsDisplay.textContent = this.game.score.toLocaleString();
+                const m = Math.floor(this.game.shiftTimeLeft / 60);
+                const s = Math.floor(this.game.shiftTimeLeft % 60);
+                this.timerDisplay.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                this.levelDisplay.textContent = `LEVEL ${this.game.difficulty.level}`;
+
+                // Hearts
+                this.heartsContainer.innerHTML = '';
+                for (let i = 1; i <= this.game.maxHearts; i++) {
+                    const h = document.createElement('span');
+                    h.className = i <= this.game.hearts ? 'heart filled' : 'heart empty';
+                    h.innerHTML = i <= this.game.hearts ? '♥' : '♡';
+                    this.heartsContainer.appendChild(h);
+                }
+
+                // Customer Orders Column
+                this.ordersContainer.innerHTML = '';
+                this.game.orders.activeOrders.forEach(o => {
+                    const card = document.createElement('div');
+                    card.className = `order-card border-${o.recipe.color}`;
+                    const ratio = o.patienceLeft / o.patienceMax;
+                    const pct = Math.max(0, ratio * 100);
+                    const stepsHtml = o.recipe.steps.map(s => {
+                        let bClass = 'badge-pink';
+                        if (s === 'bake') bClass = 'badge-teal';
+                        if (s === 'decorate') bClass = 'badge-purple';
+                        return `<span class="step-badge-mini ${bClass}" style="padding: 2px 5px; font-size: 7px; border-radius: 6px;">${s.toUpperCase()}</span>`;
+                    }).join(' <span style="font-size:7px;color:#BDC3C7;margin:0 1px;">➔</span> ');
+
+                    card.innerHTML = `
+                        <div class="order-avatar-circle">
+                            <span class="order-avatar-emoji">${o.recipe.icon}</span>
+                        </div>
+                        <div class="order-info">
+                            <span class="order-name">${o.recipe.name}</span>
+                            <div class="patience-track" style="margin-bottom: 5px;">
+                                <div class="patience-fill bg-${o.recipe.color}" style="width: ${pct}%"></div>
+                            </div>
+                            <div class="order-steps-dots" style="display: flex; align-items: center; gap: 1px; flex-wrap: wrap;">
+                                ${stepsHtml}
+                            </div>
+                        </div>
+                        <div class="order-heart-badge border-${o.recipe.color}">
+                            <span>♥</span>
+                        </div>
+                    `;
+                    card.addEventListener('pointerdown', (e) => {
+                        e.preventDefault();
+                        if (this.game.heldDish.recipe && this.game.heldDish.recipe.id === o.recipe.id) {
+                            if (this.game.heldDish.isComplete) this.game.serveDish(); else sfx.playClick();
+                        } else {
+                            this.game.selectRecipe(o.recipe);
+                        }
+                    });
+                    this.ordersContainer.appendChild(card);
+                });
+
+                // Station UI
+                this.updateStationUI();
+                // Held Dish UI
+                this.updateHeldDishUI();
+            }
+            updateStationUI() {
+                const kt = this.game.kitchen;
+
+                // Whisking
+                const wBar = this.whiskStation.querySelector('.station-progress-fill');
+                const wText = this.whiskStation.querySelector('.station-status-text');
+                if (kt.whisking.active) {
+                    wBar.style.width = `${kt.whisking.progress}%`;
+                    wText.textContent = `Mixing: ${Math.round(kt.whisking.progress)}%`;
+                    this.whiskStation.classList.add('station-active');
+                } else {
+                    const step = this.game.heldDish.getNextRequiredStep();
+                    if (step === "whisk") {
+                        wBar.style.width = '0%'; wText.textContent = "Tap to Mix!";
+                        this.whiskStation.classList.add('station-highlight');
+                        this.whiskStation.classList.remove('station-active');
+                    } else {
+                        wBar.style.width = '0%'; wText.textContent = "Inactive";
+                        this.whiskStation.classList.remove('station-highlight', 'station-active');
+                    }
+                }
+
+                // Baking
+                const bBar = this.bakeStation.querySelector('.station-progress-fill');
+                const bText = this.bakeStation.querySelector('.station-status-text');
+                if (kt.baking.active) {
+                    this.bakeStation.classList.add('station-active');
+                    if (!kt.baking.isDone) {
+                        bBar.style.width = `${kt.baking.progress}%`;
+                        bBar.className = "station-progress-fill bg-green";
+                        bText.textContent = `Baking: ${Math.round(kt.baking.progress)}%`;
+                    } else if (!kt.baking.isBurnt) {
+                        bBar.style.width = '100%';
+                        bBar.className = "station-progress-fill bg-green ready-pulse";
+                        bText.textContent = "READY! Tap to retrieve!";
+                    } else {
+                        bBar.style.width = '100%';
+                        bBar.className = "station-progress-fill bg-red burnt-shake";
+                        bText.textContent = "BURNT! Throw in Trash!";
+                    }
+                } else {
+                    const step = this.game.heldDish.getNextRequiredStep();
+                    if (step === "bake") {
+                        bBar.style.width = '0%'; bBar.className = "station-progress-fill bg-green";
+                        bText.textContent = "Ready to Bake!";
+                        this.bakeStation.classList.add('station-highlight');
+                        this.bakeStation.classList.remove('station-active');
+                    } else {
+                        bBar.style.width = '0%'; bBar.className = "station-progress-fill bg-green";
+                        bText.textContent = "Smells Sweet!";
+                        this.bakeStation.classList.remove('station-highlight', 'station-active');
+                    }
+                }
+
+                // Icing
+                const iBar = this.icingStation.querySelector('.station-progress-fill');
+                const iText = this.icingStation.querySelector('.station-status-text');
+                if (kt.icing.active) {
+                    this.icingStation.classList.add('station-active');
+                    iBar.style.width = `${kt.icing.progress}%`;
+                    iText.textContent = `Decorating: ${Math.round(kt.icing.progress)}%`;
+                } else {
+                    const step = this.game.heldDish.getNextRequiredStep();
+                    if (step === "decorate") {
+                        iBar.style.width = '0%'; iText.textContent = "Ready to Ice!";
+                        this.icingStation.classList.add('station-highlight');
+                        this.icingStation.classList.remove('station-active');
+                    } else {
+                        iBar.style.width = '0%'; iText.textContent = "Be Creative!";
+                        this.icingStation.classList.remove('station-highlight', 'station-active');
+                    }
+                }
+            }
+            updateHeldDishUI() {
+                const dish = this.game.heldDish;
+                if (!dish.recipe) {
+                    this.heldDishDisplay.className = "held-dish-capsule empty";
+                    this.heldDishDisplay.innerHTML = `
+                        <span class="held-icon">🍳</span>
+                        <div class="held-details">
+                            <h5>EMPTY HANDS</h5>
+                            <p>Select an active order or Cookbook to start</p>
+                        </div>
+                    `;
+                    return;
+                }
+                const stepsDots = dish.recipe.steps.map((s, idx) => {
+                    let dClass = 'dot-todo';
+                    if (dish.completedSteps[idx] === s) dClass = `dot-done bg-${dish.recipe.color}`;
+                    return `<span class="step-dot ${dClass}" title="${s}"></span>`;
+                }).join('');
+
+                if (dish.isBurnt) {
+                    this.heldDishDisplay.className = "held-dish-capsule burnt-shake error-state";
+                    this.heldDishDisplay.innerHTML = `
+                        <span class="held-icon">🔥</span>
+                        <div class="held-details">
+                            <h5>BURNT ${dish.recipe.name.toUpperCase()}</h5>
+                            <p class="txt-red">Must be discarded in Trash!</p>
+                        </div>
+                    `;
+                } else if (dish.isComplete) {
+                    this.heldDishDisplay.className = `held-dish-capsule success-pulse ready-border border-${dish.recipe.color}`;
+                    this.heldDishDisplay.innerHTML = `
+                        <span class="held-icon">${dish.recipe.icon}</span>
+                        <div class="held-details">
+                            <h5>READY ${dish.recipe.name.toUpperCase()}!</h5>
+                            <p class="txt-green">Tap here or on Order to Serve!</p>
+                        </div>
+                    `;
+                } else {
+                    const step = dish.getNextRequiredStep();
+                    this.heldDishDisplay.className = `held-dish-capsule active-border border-${dish.recipe.color}`;
+                    this.heldDishDisplay.innerHTML = `
+                        <span class="held-icon">${dish.recipe.icon}</span>
+                        <div class="held-details">
+                            <h5>COOKING: ${dish.recipe.name.toUpperCase()}</h5>
+                            <p>Next: <b class="capitalize text-accent">${step}</b></p>
+                            <div class="steps-progress-dots">${stepsDots}</div>
+                        </div>
+                    `;
+                }
+            }
+            renderGameOverScreen(win) {
+                this.overCakesBaked.textContent = this.game.cakesBaked;
+                this.overPointsVal.textContent = this.game.score.toLocaleString();
+                this.overStars.innerHTML = '';
+                let stars = 0;
+                if (win) {
+                    this.overTitle.textContent = "Sweet Success!";
+                    this.overSubtitle.textContent = "• SHIFT FINISHED! •";
+                    this.overQuote.textContent = "“That was delicious! The kitchen is smelling so sweet!”";
+                    if (this.game.score >= 2500) stars = 3; else if (this.game.score >= 1200) stars = 2; else stars = 1;
+                } else {
+                    this.overTitle.textContent = "Shift Failed!";
+                    this.overSubtitle.textContent = "• KITCHEN CLOSED •";
+                    this.overQuote.textContent = "“Oh no, the kitchen is in a mess! Let's clean up and try again!”";
+                    stars = 0;
+                }
+                for (let i = 1; i <= 3; i++) {
+                    const star = document.createElement('span');
+                    star.className = i <= stars ? 'over-star filled-star' : 'over-star empty-star';
+                    star.innerHTML = i <= stars ? '★' : '☆';
+                    this.overStars.appendChild(star);
+                }
+            }
+        }
+
+        // --- 8. INITIALIZATION RUNNER ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const game = new GameManager();
+            const ui = new UIController(game);
+            window.gameInstance = game;
+        });
+    </script>
+</body>
+</html>
